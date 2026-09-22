@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}
+Home - Student Management System
+{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+
+    <h1>
+        Student Management System
+    </h1>
+
+    <p>
+        College Student Grade Management System
+    </p>
+
+    <div class="buttons">
+
+        <a
+            href="{{ url_for('login') }}"
+            class="button"
+        style="background: green;">
+            Login
+        </a>
+
+        <a
+            href="{{ url_for('register') }}"
+            class="button secondary"
+        >
+            Register as Student
+        </a>
+
+    </div>
+
+</section>
+
+
+<section class="card-grid">
+
+    <div class="card">
+
+        <h3>👨‍🎓 Students</h3>
+
+        <p>
+            Students can register,
+            login, and view their grades.
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>👨‍💼 Admin</h3>
+
+        <p>
+            Admin can manage subjects
+            and encode student grades.
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>📊 College Grading</h3>
+
+        <p>
+            Grades use the 1.00 to 5.00
+            college grading scale.
+        </p>
+
+    </div>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+
+{% block title %}
+Encode Grades
+{% endblock %}
+
+{% block content %}
+
+<h1>
+    Encode Grades
+</h1>
+
+<p>
+
+    Student:
+
+    <strong>
+        {{ student["username"] }}
+    </strong>
+
+</p>
+
+
+<div class="table-card">
+
+    <form method="POST">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Subject
+                    </th>
+
+                    <th>
+                        Prelim
+                    </th>
+
+                    <th>
+                        Midterm
+                    </th>
+
+                    <th>
+                        Finals
+                    </th>
+
+                    <th>
+                        Final Grade
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for subject in subjects %}
+
+                    {% set grade = grades.get(subject["id"]) %}
+
+                    <tr>
+
+                        <td>
+                            {{ subject["name"] }}
+                        </td>
+
+
+                        <td>
+
+                            <input
+                                type="number"
+                                name="prelim_{{ subject['id'] }}"
+                                min="1"
+                                max="5"
+                                step="0.01"
+                                placeholder="1.00 - 5.00"
+                                value="{% if grade and grade['prelim'] is not none %}{{ grade['prelim'] }}{% endif %}"
+                            >
+
+                        </td>
+
+
+                        <td>
+
+                            <input
+                                type="number"
+                                name="midterm_{{ subject['id'] }}"
+                                min="1"
+                                max="5"
+                                step="0.01"
+                                placeholder="1.00 - 5.00"
+                                value="{% if grade and grade['midterm'] is not none %}{{ grade['midterm'] }}{% endif %}"
+                            >
+
+                        </td>
+
+
+                        <td>
+
+                            <input
+                                type="number"
+                                name="finals_{{ subject['id'] }}"
+                                min="1"
+                                max="5"
+                                step="0.01"
+                                placeholder="1.00 - 5.00"
+                                value="{% if grade and grade['finals'] is not none %}{{ grade['finals'] }}{% endif %}"
+                            >
+
+                        </td>
+
+
+                        <td>
+
+                            {% if grade %}
+
+                                {% set final = calculate_final(
+                                    grade["prelim"],
+                                    grade["midterm"],
+                                    grade["finals"]
+                                ) %}
+
+                                {% if final is not none %}
+
+                                    <strong>
+                                        {{ "%.2f"|format(final) }}
+                                    </strong>
+
+                                {% else %}
+
+                                    -
+
+                                {% endif %}
+
+                            {% else %}
+
+                                -
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+
+        <button type="submit">
+            Save Grades
+        </button>
+
+    </form>
+
+</div>
+
+
+<div class="card">
+
+    <h3>
+        Grading Formula
+    </h3>
+
+    <p>
+        Final Grade =
+        (Prelim + Midterm + Finals) ÷ 3
+    </p>
+
+    <p>
+        Valid grades:
+        <strong>1.00 to 5.00</strong>
+    </p>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %}
+My Grades
+{% endblock %}
+
+{% block content %}
+
+<h1>
+    Welcome, {{ session.get("username") }}!
+</h1>
+
+<p>
+    Here are your current grades.
+</p>
+
+<div class="table-card">
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>
+                    Subject
+                </th>
+
+                <th>
+                    Prelim
+                </th>
+
+                <th>
+                    Midterm
+                </th>
+
+                <th>
+                    Finals
+                </th>
+
+                <th>
+                    Final Grade
+                </th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for subject in subjects %}
+
+                {% set grade = grades.get(subject["id"]) %}
+
+                <tr>
+
+                    <td>
+                        {{ subject["name"] }}
+                    </td>
+
+                    <td>
+                        {% if grade and grade["prelim"] is not none %}
+                            {{ "%.2f"|format(grade["prelim"]) }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if grade and grade["midterm"] is not none %}
+                            {{ "%.2f"|format(grade["midterm"]) }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if grade and grade["finals"] is not none %}
+                            {{ "%.2f"|format(grade["finals"]) }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if grade %}
+                            {% set final = calculate_final(
+                                grade["prelim"],
+                                grade["midterm"],
+                                grade["finals"]
+                            ) %}
+                            {% if final is not none %}
+                                <strong>
+                                    {{ "%.2f"|format(final) }}
+                                </strong>
+                            {% else %}
+                                -
+                            {% endif %}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<div class="card">
+
+    <h3>
+        Grade Computation
+    </h3>
+
+    <p>
+        Final Grade =
+        (Prelim + Midterm + Finals) ÷ 3
+    </p>
+
+</div>
+
+{% endblock %}
